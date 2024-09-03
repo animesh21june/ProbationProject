@@ -1,0 +1,104 @@
+<template>
+     <!-- Manager List -->
+     <lightning-layout class="slds-p-around_medium">
+        <lightning-layout-item size="12">
+            <lightning-card title="Select Manager">
+                <lightning-datatable
+                    key-field="Id"
+                    data={managerData}
+                    columns={managerColumns}
+                    onrowaction={handleManagerSelect}
+                    hide-checkbox-column="true"
+                    class="slds-m-top_medium"
+                >
+                </lightning-datatable>
+            </lightning-card>
+        </lightning-layout-item>
+    </lightning-layout>
+
+     <!-- Employee List -->
+     <template if:true={isEmployeeTableVisible}>
+        <lightning-layout class="slds-p-around_medium">
+            <lightning-layout-item size="12">
+                <lightning-card title="Select Employee" icon-name="standard:people">
+                    <lightning-datatable
+                        key-field="Id"
+                        data={employeeData}
+                        columns={employeeColumns}
+                        onrowaction={handleEmployeeSelect}
+                        hide-checkbox-column="true"
+                        class="slds-m-top_medium"
+                    >
+                    </lightning-datatable>
+                </lightning-card>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+    <!-- Employee Detail Modal -->
+    <template if:true={isEmployeeDetailModalVisible}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" alternative-text="Close" title="Close"
+                        onclick={closeEmployeeDetailModal} class="slds-modal__close"></lightning-button-icon>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Employee Detail</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p><strong>Employee Name: </strong>{selectedEmployee.Name}</p>
+                    <p><strong>Employee Position: </strong>{selectedEmployee.Position__c}</p>
+                    <p><strong>Employee Department: </strong>{selectedEmployee.Department__c}</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Add Performance Review" onclick={openPerformanceReviewModal}
+                        class="slds-m-left_small"></lightning-button>
+                    <lightning-button label="Cancel" onclick={cancelEmployeeModal}
+                        class="slds-m-left_small"></lightning-button>
+                    
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+     <!-- Performance Review Modal -->
+<template if:true={isPerformanceReviewModalVisible}>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-02"
+        class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!-- Modal Header -->
+            <header class="slds-modal__header">
+                <lightning-button-icon icon-name="utility:close" alternative-text="Close" title="Close"
+                    onclick={closePerformanceReviewModal} class="slds-modal__close slds-button_icon slds-button_icon-inverse">
+                    <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                </lightning-button-icon>
+                <h2 id="modal-heading-02" class="slds-text-heading_medium">Add Performance Review</h2>
+            </header>
+            
+            <!-- Modal Body -->
+            <div class="slds-modal__content slds-p-around_medium">
+                <!-- Performance Review Form -->
+                <lightning-record-edit-form object-api-name="Performance_Review__c" onsuccess={handleReviewSuccess}>
+                    <lightning-input-field field-name="Name" class="slds-p-bottom_small"></lightning-input-field>
+                    <lightning-input-field field-name="Rating__c" class="slds-p-bottom_small"></lightning-input-field>
+                    <lightning-input-field field-name="Review_Date__c" class="slds-p-bottom_small"></lightning-input-field>
+                    <lightning-input-field field-name="Comments__c" class="slds-p-bottom_small"></lightning-input-field>
+                    <lightning-input-field field-name="Employee__c" value={selectedEmployeeId} ></lightning-input-field>
+                    <div class="slds-m-top_medium">
+                        <lightning-button variant="brand" type="submit" label="Submit"></lightning-button>
+                    </div>
+                </lightning-record-edit-form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <footer class="slds-modal__footer">
+                <lightning-button label="Cancel" onclick={closePerformanceReviewModal} class="slds-m-left_small"></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+
+
+    
+</template>

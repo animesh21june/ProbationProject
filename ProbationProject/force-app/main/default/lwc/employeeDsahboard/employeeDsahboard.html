@@ -1,0 +1,41 @@
+<template>
+    <lightning-card title="Employee Dashboard" icon-name="standard:dashboard">
+   <!-- <h1 style="text-align: center; font-size: 3em; color: red;"> Employee Dashboard</h1>-->
+    <!-- Search Box and Employee List -->
+    <lightning-layout class="slds-p-around_medium">
+        <lightning-layout-item size="12">
+            <lightning-input label="Search Employee" onchange={handleSearchChange} value={searchTerm}></lightning-input>
+        </lightning-layout-item>
+    </lightning-layout>
+
+    <!-- Employee Data Table -->
+    <template if:true={employeeData}>
+        <lightning-datatable
+            key-field="Id"
+            data={employeeData}
+            columns={employeeColumns}
+            onrowaction={handleEmployeeSelect}
+            hide-checkbox-column="true"
+            class="slds-m-top_medium">
+        </lightning-datatable>
+    </template>
+     <!-- Charts -->
+    <template if:true={selectedEmployeeId}>
+        <div class="chart-container">
+            <!-- Bar Chart for Goals -->
+            <canvas class="chart" lwc:dom="manual"></canvas>
+            <!-- Pie Chart for Average Rating -->
+            <canvas class="chart" lwc:dom="manual"></canvas>
+            <!-- Bar Chart for Skills -->
+            <canvas class="chart" lwc:dom="manual"></canvas>
+        </div>
+    </template>
+
+    <!-- Loading Spinner -->
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </template>
+</lightning-card>
+
+  
+</template>
